@@ -337,13 +337,23 @@
 
             let clothIcon = "👕";
             let clothText = "舒適穿搭";
-            if (parseInt(maxTemp) >= 28) {
+            if (parseInt(maxTemp) >= 32) {
+                clothIcon = "🔥";
+                clothText = "要融化了";
+            } 
+            else if (parseInt(maxTemp) >= 28) {
                 clothIcon = "🎽";
-                clothText = "好熱 短袖出發";
-            } else if (parseInt(maxTemp) <= 20) {
+                clothText = "該穿短袖";
+            } 
+            else if (parseInt(maxTemp) <= 20) {
                 clothIcon = "🧥";
-                clothText = "加件外套吧~";
+                clothText = "加件外套吧";
             }
+            else if (parseInt(maxTemp) <= 15) {
+                clothIcon = "❄️";
+                clothText = "寒流來啦!";
+            }
+            
 
             return { rainIcon, rainText, clothIcon, clothText };
         }
