@@ -255,6 +255,31 @@
             align-items: center;
             z-index: 999;
         }
+
+        .city-buttons {
+        margin-top: 10px; /* 往上移，靠近狀態列 */
+        margin-bottom: 50px;
+        text-align: center;
+        }
+
+        .city-buttons button {
+            background-color: rgb(253, 216, 48); /* 麥當勞紅 */
+            color: #FFF8DC;           /* 麥當勞黃 */
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .city-buttons button:hover {
+            background-color: #FFD700; /* hover 變黃 */
+            color: #DA291C;            /* 字變紅 */
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
@@ -263,12 +288,21 @@
         <div style="font-size: 4rem; animation: bounce 2s infinite;">☁️</div>
         <p style="color:#FFD700 ; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
     </div>
+
     <div class="status-bar">
-        <div class="location-pill">📍 高雄</div>
+        <div id="location" class="location-pill">📍 載入中...</div>
         <div id="updateTime" class="update-pill">更新中...</div>
     </div>
 
     <div class="container" id="mainContent" style="display: none;">
+        <!-- 多縣市按鈕 -->
+        <div class="city-buttons">
+             <button onclick="fetchWeather('taipei')">📍台北</button>
+             <button onclick="fetchWeather('hsinchu')">📍新竹市</button>
+             <button onclick="fetchWeather('taichung')">📍台中</button>
+             <button onclick="fetchWeather('nantou')">📍南投</button>
+             <button onclick="fetchWeather('kaohsiung')">📍高雄</button>
+         </div>
 
         <div id="heroCard">
         </div>
@@ -280,7 +314,8 @@
     </div>
 
     <script>
-        const API_URL = "https://weather-anycity.zeabur.app/api/weather/kaohsiung";
+        // 基底 API 網址，不要寫死城市
+        const API_BASE_URL = "https://weather-anycity.zeabur.app/api/weather/";
 
         function getWeatherIcon(weather) {
             if (!weather) return "🌤️";
@@ -390,15 +425,19 @@
             const days = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
 
             document.getElementById('updateTime').textContent = `${month}月${date}日 ${days[dayIndex]}`;
+
+            // 4. 更新地點顯示
+            document.getElementById("location").textContent = `📍 ${data.city}`;
         }
 
-        async function fetchWeather() {
+        async function fetchWeather(city = "hsinchu") {
             try {
                 // 1. 定義「最低等待時間」：1500 毫秒 (1.5秒)
                 const delayPromise = new Promise(resolve => setTimeout(resolve, 1500));
 
                 // 2. 定義「抓取資料」的工作
-                const fetchPromise = fetch(API_URL).then(res => res.json());
+                console.log("呼叫的 URL:", `${API_BASE_URL}${city}`);
+                const fetchPromise = fetch(`${API_BASE_URL}${city}`).then(res => res.json());
 
                 // 3. Promise.all 會等待「兩個都完成」才會往下走
                 // result 陣列裡，第一個是 delay 的結果(沒用到)，第二個是 api 的 json 資料
@@ -419,7 +458,10 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", fetchWeather);
+        document.addEventListener("DOMContentLoaded", () => {
+            // 預設載入新竹
+            fetchWeather("hsinchu");
+        });
     </script>
 </body>
 
