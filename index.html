@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>森森天氣</title>
+    <title>好心情天氣</title>
     <link rel="icon" type="image/png" href="./icon-v2.png">
     <link rel="apple-touch-icon" href="./icon-v2.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png">
@@ -15,14 +15,14 @@
 
     <style>
         :root {
-            --ac-green: #7DE1A9;
-            --ac-bg-pattern: #8FD8AF;
-            --ac-cream: #FFFEF2;
-            --ac-yellow: #F9F195;
-            --ac-brown: #796452;
-            --ac-blue: #4FB5D9;
-            --ac-dark: #58504A;
-            --ac-card-border: #E6E0C8;
+            --ac-green: #FFF8DC;       /* 奶油白背景，取代大紅 */
+            --ac-bg-pattern: #FFD700;  /* 黃色拱門斜紋 */
+            --ac-cream: #FFFFFF;       /* 純白卡片 */
+            --ac-yellow: #FFD700;      /* 黃金色強調 */
+            --ac-brown: #8B4513;       /* 漢堡麵包棕 */
+            --ac-blue: #1E90FF;        /* 飲料杯藍 */
+            --ac-dark: #333333;        /* 深灰字體 */
+            --ac-card-border: #FF0000; /* 紅色邊框，保留品牌感 */
         }
 
         * {
@@ -187,7 +187,7 @@
         /* === 稍後預報：橫向滑動區 === */
         .section-title {
             font-size: 1.2rem;
-            color: white;
+            color: orange;
             margin-bottom: 15px;
             margin-left: 10px;
             font-weight: 900;
@@ -221,7 +221,7 @@
 
         .mini-time {
             background: var(--ac-green);
-            color: white;
+            color: #FFD700;
             padding: 3px 10px;
             border-radius: 10px;
             font-size: 0.8rem;
@@ -261,7 +261,7 @@
 <body>
     <div id="loading" class="loading-screen">
         <div style="font-size: 4rem; animation: bounce 2s infinite;">☁️</div>
-        <p style="color: white; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
+        <p style="color:#FFD700 ; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
     </div>
     <div class="status-bar">
         <div class="location-pill">📍 高雄</div>
@@ -294,20 +294,20 @@
 
         function getAdvice(rainProb, maxTemp) {
             let rainIcon = "🌂";
-            let rainText = "不用帶傘";
+            let rainText = "放心出門啦";
             if (parseInt(rainProb) > 30) {
                 rainIcon = "☂️";
-                rainText = "記得帶傘！";
+                rainText = "QQ下雨了 記得帶傘！";
             }
 
             let clothIcon = "👕";
             let clothText = "舒適穿搭";
             if (parseInt(maxTemp) >= 28) {
                 clothIcon = "🎽";
-                clothText = "短袖出發";
+                clothText = "好熱 短袖出發";
             } else if (parseInt(maxTemp) <= 20) {
                 clothIcon = "🧥";
-                clothText = "加件外套";
+                clothText = "加件外套吧~";
             }
 
             return { rainIcon, rainText, clothIcon, clothText };
