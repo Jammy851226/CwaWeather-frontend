@@ -64,7 +64,7 @@
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transform: rotate(-2deg);
             border: 2px solid white;
             box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
@@ -139,7 +139,7 @@
         }
 
         .hero-temp {
-            font-size: 4.5rem;
+            font-size: 5rem;
             font-weight: 900;
             color: var(--ac-brown);
             line-height: 1;
@@ -187,7 +187,7 @@
         /* === 稍後預報：橫向滑動區 === */
         .section-title {
             font-size: 1.2rem;
-            color: orange;
+            color: rgb(253, 161, 133);
             margin-bottom: 15px;
             margin-left: 10px;
             font-weight: 900;
@@ -221,7 +221,7 @@
 
         .mini-time {
             background: var(--ac-green);
-            color: #FFD700;
+            color: #ffc400;
             padding: 3px 10px;
             border-radius: 10px;
             font-size: 0.8rem;
@@ -263,7 +263,8 @@
         }
 
         .city-buttons button {
-            background-color: rgb(252, 221, 86); /* 麥當勞紅 */
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background-color: rgba(252, 225, 105, 0.74); /* 麥當勞紅 */
             color: var(--ac-brown);           /* 麥當勞黃 */
             border: none;
             padding: 10px 20px;
@@ -278,7 +279,8 @@
         .city-buttons button:hover {
             background-color: #FFD700; /* hover 變黃 */
             color: #DA291C;            /* 字變紅 */
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
     </style>
 </head>
@@ -297,17 +299,18 @@
     <div class="container" id="mainContent" style="display: none;">
         <!-- 多縣市按鈕 -->
         <div class="city-buttons">
-             <button onclick="fetchWeather('taipei')">📍台北</button>
-             <button onclick="fetchWeather('hsinchu')">📍新竹市</button>
-             <button onclick="fetchWeather('taichung')">📍台中</button>
-             <button onclick="fetchWeather('nantou')">📍南投</button>
-             <button onclick="fetchWeather('kaohsiung')">📍高雄</button>
+             <button onclick="fetchWeather('taipei')">🏢台北</button>
+             <button onclick="fetchWeather('taoyuan')">✈️桃園</button>
+             <button onclick="fetchWeather('hsinchu')">💻新竹</button>
+             <button onclick="fetchWeather('taichung')">🎡台中</button>
+             <button onclick="fetchWeather('nantou')">⛰️南投</button>
+             <button onclick="fetchWeather('kaohsiung')">🚢高雄</button>
          </div>
 
         <div id="heroCard">
         </div>
 
-        <h3 class="section-title">稍後預報</h3>
+        <h3 class="section-title">後續預報</h3>
         <div class="scroll-container" id="futureForecasts">
         </div>
 
@@ -329,7 +332,7 @@
 
         function getAdvice(rainProb, maxTemp) {
             let rainIcon = "🌂";
-            let rainText = "放心出門啦";
+            let rainText = "放心出門";
             if (parseInt(rainProb) > 30) {
                 rainIcon = "☂️";
                 rainText = "QQ下雨了 記得帶傘！";
@@ -347,11 +350,11 @@
             } 
             else if (parseInt(maxTemp) <= 20) {
                 clothIcon = "🧥";
-                clothText = "加件外套吧";
+                clothText = "加件外套";
             }
             else if (parseInt(maxTemp) <= 15) {
                 clothIcon = "❄️";
-                clothText = "寒流來啦!";
+                clothText = "寒流來了!";
             }
             
 
