@@ -361,6 +361,62 @@
             return { rainIcon, rainText, clothIcon, clothText };
         }
 
+        function getWindAdvice(windSpeed) {
+            let windIcon = "🪶";
+            let windText = "幾乎沒風";
+
+            const speed = parseFloat(windSpeed);
+            if (speed < 2) {
+              windIcon = "🪶";
+              windText = "幾乎沒風";
+            } else if (speed < 5) {
+              windIcon = "🍃";
+              windText = "微風徐徐";
+            } else if (speed < 10) {
+              windIcon = "💨";
+              windText = "風有點大";
+            } else {
+              windIcon = "🌪️";
+              windText = "強風來襲";
+            }
+
+            return { windIcon, windText };
+        }
+
+        function getUVAdvice(uvLevel) {
+            let uvIcon = "☀️";
+            let uvText = "紫外線資訊";
+
+            switch (uvLevel) {
+                case "低量級":
+                    uvIcon = "🟢";
+                    uvText = "放心外出";
+                    break;
+                case "中量級":
+                    uvIcon = "🟡";
+                    uvText = "注意防曬";
+                    break;
+                case "高量級":
+                    uvIcon = "🟠";
+                    uvText = "裝備穿上";
+                    break;
+                case "過量級":
+                    uvIcon = "🔴";
+                    uvText = "避免外出";
+                    break;
+                case "危險級":
+                    uvIcon = "☠️";
+                    uvText = "要出事了";
+                    break;
+                default:
+                    uvIcon = "☀️";
+                    uvText = "紫外線資訊未知";
+                    break;
+            }
+
+            return { uvIcon, uvText };
+        }
+
         function getTimePeriod(startTime) {
             const hour = new Date(startTime).getHours();
             if (hour >= 5 && hour < 11) return "早晨";
@@ -379,6 +435,8 @@
             const advice = getAdvice(current.rain, current.maxTemp);
             const period = getTimePeriod(current.startTime);
             const avgTemp = Math.round((parseInt(current.maxTemp) + parseInt(current.minTemp)) / 2);
+            const uvAdvice = getUVAdvice(current.UV);
+            const windAdvice = getWindAdvice(current.windSpeed);
 
             document.getElementById('heroCard').innerHTML = `
                         <div class="hero-card">
@@ -400,6 +458,16 @@
                                     <div class="advice-text">${advice.clothText}</div>
                                     <div style="font-size:0.7rem; color:#999">最高溫 ${current.maxTemp}°</div>
                                 </div>
+                                <div class="advice-item">
+                                    <div class="advice-icon">${uvAdvice.uvIcon}</div>
+                                    <div class="advice-text">${uvAdvice.uvText}</div>
+                                    <div style="font-size:0.7rem; color:#999">UV ${current.UV}</div>
+                                </div>
+                                <div class="advice-item">
+                                    <div class="advice-icon">${windAdvice.windIcon}</div>
+                                    <div class="advice-text">${windAdvice.windText}</div>
+                                    <div style="font-size:0.7rem; color:#999">${current.windSpeed} m/s</div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -416,9 +484,19 @@
 
                 // 判斷該預報的日期是否跟今天不同，不同就是明天
                 const fDate = new Date(f.startTime);
-                if (fDate.getDate() !== todayDate) {
+                const diff = fDate.getDate() - todayDate;
+                if (diff === 0) {
+                    p = "今天" + p;
+                } 
+                else if (diff === 1) {
                     p = "明天" + p;
-                }
+                } 
+                else if (diff === 2) {
+                    p = "後天" + p;
+                } 
+                else if (diff === 3) {
+                    p = "大後天" + p;
+                } 
 
                 scrollContainer.innerHTML += `
                             <div class="mini-card">
@@ -426,6 +504,8 @@
                                 <div class="mini-icon">${getWeatherIcon(f.weather)}</div>
                                 <div class="mini-temp">${f.minTemp}° - ${f.maxTemp}°</div>
                                 <div style="font-size:0.8rem; color:#888; margin-top:5px;">💧${f.rain}</div>
+                                <div style="font-size:0.8rem; color:#888; margin-top:5px;">🔅 UV ${f.UV}</div>
+                                <div style="font-size:0.8rem; color:#888; margin-top:5px;">🌀 ${f.windSpeed} m/s</div>
                             </div>
                         `;
             });
