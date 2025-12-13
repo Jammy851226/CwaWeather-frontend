@@ -54,7 +54,7 @@
             const hour = new Date().getHours();
             const themeLink = document.getElementById("style");
 
-            if (hour >= 18 || hour < 6) {
+            if (hour >= 18 || hour < 5) {
                 // 晚上 6 點到早上 6 點 → 藍色調
                 themeLink.href = "style_night.css";
             } else {

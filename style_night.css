@@ -87,8 +87,10 @@
             top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgb(0, 234, 255);
-            color: white;
+            /* background: rgb(0, 234, 255);
+            color: white; */
+            background: linear-gradient(135deg, #0A0F2C, #331c57, #002374);
+            color: #FFD700; /* 黃金色字體，像星光 */
             padding: 5px 20px;
             border-radius: 20px;
             font-weight: bold;
