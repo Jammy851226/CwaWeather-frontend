@@ -49,6 +49,7 @@
     <script>
         // 基底 API 網址，不要寫死城市
         const API_BASE_URL = "https://weather-anycity.zeabur.app/api/weather/";
+        const API_IP_URL = "https://weather-anycity.zeabur.app/api/weather/ip";
 
         function applyThemeByTime() {
             const hour = new Date().getHours();
@@ -266,6 +267,32 @@
             document.getElementById("location").textContent = `📍 ${data.city}`;
         }
 
+        async function fetchWeatherByIP() {
+            try {
+                // 加入最低等待時間，讓 loading 動畫至少跑 1.5 秒
+                const delayPromise = new Promise(resolve => setTimeout(resolve, 1500));
+
+                console.log("呼叫的 URL:", API_IP_URL);
+                const fetchPromise = fetch(API_IP_URL).then(res => res.json());
+
+                const [_, json] = await Promise.all([delayPromise, fetchPromise]);
+
+                if (json.success) {
+                    renderWeather(json.data);
+
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                } else {
+                    throw new Error("API Error: " + (json.message || "未知錯誤"));
+                }
+            } catch (e) {
+                console.error(e);
+                alert("偵測定位失敗，將顯示預設城市的天氣資料。");
+                // fallback：如果 IP 定位失敗，就用新竹
+                fetchWeather("hsinchu");
+            }
+        }
+
         async function fetchWeather(city = "hsinchu") {
             try {
                 // 1. 定義「最低等待時間」：1500 毫秒 (1.5秒)
@@ -290,13 +317,15 @@
                 }
             } catch (e) {
                 console.error(e);
-                alert("天氣資料讀取失敗，狸克把網路線咬斷了！");
+                alert("天氣資料讀取失敗，強風把網路線吹斷了！");
             }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             // 預設載入新竹
-            fetchWeather("hsinchu");
+            //fetchWeather("hsinchu");
+
+            fetchWeatherByIP();
             applyThemeByTime();
         });
     </script>
