@@ -321,13 +321,14 @@
                 const msgEl = document.getElementById("loadingMessage");
                 if (msgEl) {
                     msgEl.textContent = "偵測定位失敗，將顯示預設城市的天氣資料。";
+
+                     // 1 秒後清除提示文字，並繼續操作
+                    setTimeout(() => {
+                        msgEl.textContent = "";
+                    }, 500);
                 }
 
-                // 1 秒後清除提示文字，並繼續操作
-                setTimeout(() => {
-                    msgEl.textContent = "";
-                    fetchWeather("hsinchu"); // 繼續操作：載入新竹天氣
-                }, 500);
+                fetchWeather("hsinchu"); // 繼續操作：載入新竹天氣
             }
         }
 
