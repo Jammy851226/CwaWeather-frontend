@@ -21,6 +21,8 @@
         <p style="color:#FFD700 ; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
     </div>
 
+    <div id="message" style="color: gray; font-size: 0.9em; margin-top: 8px;"></div>
+
     <div class="status-bar">
         <div id="location" class="location-pill">📍 載入中...</div>
         <div id="updateTime" class="update-pill">更新中...</div>
@@ -314,7 +316,13 @@
                 }
             } catch (e) {
                 console.error(e);
-                alert("偵測定位失敗，將顯示預設城市的天氣資料。");
+                
+                // 在頁面上顯示小字提示，而不是 alert
+                const msgEl = document.getElementById("message");
+                if (msgEl) {
+                    msgEl.textContent = "偵測定位失敗，將顯示預設城市（新竹）的天氣資料。";
+                }
+
                 // fallback：如果 IP 定位失敗，就用新竹
                 fetchWeather("hsinchu");
             }
