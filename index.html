@@ -272,10 +272,37 @@
                 // 加入最低等待時間，讓 loading 動畫至少跑 1.5 秒
                 const delayPromise = new Promise(resolve => setTimeout(resolve, 1500));
 
-                console.log("呼叫的 URL:", API_IP_URL);
-                const fetchPromise = fetch(API_IP_URL).then(res => res.json());
+                // 呼叫後端 reverseGeocode API
+                // 1. 先取得使用者的經緯度
+                const geoPromise = new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    async (pos) => {
+                        try {
+                            // 成功取得座標
+                            const { latitude, longitude } = pos.coords;
 
-                const [_, json] = await Promise.all([delayPromise, fetchPromise]);
+                            // 呼叫後端 reverseGeocode API，把座標轉成城市
+                            const res = await fetch(`https://weather-anycity.zeabur.app/api/reverse-geocode?lat=${latitude}&lng=${longitude}`);
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! status: ${res.status}`);
+                            }
+                            const data = await res.json();
+
+                            // 成功 → 把結果丟給 resolve
+                            resolve(data);
+                        } catch (err) {
+                            // 如果呼叫 API 出錯 → reject
+                            reject(err);
+                        }
+                    },
+                    (err) => {
+                        // 如果 geolocation 本身失敗（例如使用者拒絕授權）→ reject
+                        reject(err);
+                    }
+                );
+                });
+                
+                const [_, json] = await Promise.all([delayPromise, geoPromise]);
 
                 if (json.success) {
                     renderWeather(json.data);
